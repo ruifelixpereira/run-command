@@ -11,7 +11,7 @@ jobs:
     name: build_release
     runs-on: ubuntu-latest
     steps:
-      - name: checkout
+      - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
@@ -24,10 +24,10 @@ jobs:
       - name: Build
         run: npm run prestart
       - name: Get version
-        run: echo "::set-output name=version::$(jq -r .version package.json)"
+        run: echo "version=$(jq -r .version package.json)" >> $GITHUB_OUTPUT
         id: version
       - name: Build artifacts
-        run: cd scripts && ./prepare-package.sh
+        run: npm run pack
       - name: Create Release
         uses: actions/create-release@v1
         id: create_release
