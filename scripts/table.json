@@ -1,0 +1,89 @@
+{
+    "properties": {
+        "schema": {
+            "name": "RunCmdHistory_CL",
+            "columns": [
+                {
+                    "name": "TimeGenerated",
+                    "type": "datetime",
+                    "description": "The time at which the data was generated"
+                },
+                {
+                    "name": "commandId",
+                    "type": "string",
+                    "description": "The run command id"
+                },
+                {
+                    "name": "commandName",
+                    "type": "string",
+                    "description": "The run command name"
+                },
+                {
+                    "name": "location",
+                    "type": "string",
+                    "description": "The command resource location"
+                },
+                {
+                    "name": "vmName",
+                    "type": "string",
+                    "description": "The VM name whe the run command was executed"
+                },
+                {
+                    "name": "resourceGroup",
+                    "type": "string",
+                    "description": "The VM resource group name whe the run command was executed"
+                },
+                {
+                    "name": "subscriptionId",
+                    "type": "string",
+                    "description": "The VM subscription Id whe the run command was executed"
+                },
+                {
+                    "name": "source",
+                    "type": "string",
+                    "description": "The run command script"
+                },
+                {
+                    "name": "InstanceView",
+                    "type": "dynamic",
+                    "description": "Additional message properties"
+                },
+                {
+                    "name": "executionState",
+                    "type": "string",
+                    "description": "The run command execution state"
+                },
+                {
+                    "name": "executionMessage",
+                    "type": "string",
+                    "description": "The run command execution message"
+                },
+                {
+                    "name": "exitCode",
+                    "type": "string",
+                    "description": "The run command exit code"
+                },
+                {
+                    "name": "stdOutput",
+                    "type": "string",
+                    "description": "The run command output"
+                },
+                {
+                    "name": "stdError",
+                    "type": "string",
+                    "description": "The run command error"
+                },
+                {
+                    "name": "startTime",
+                    "type": "datetime",
+                    "description": "The run command start time"
+                },
+                {
+                    "name": "endTime",
+                    "type": "datetime",
+                    "description": "The run command end time"
+                }
+            ]
+        }
+    }
+}

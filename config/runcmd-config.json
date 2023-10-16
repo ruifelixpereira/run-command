@@ -1,0 +1,10 @@
+[
+    {
+        "os": "Windows",
+        "cmd": "dir"
+    },
+    {
+        "os": "Linux",
+        "cmd": "ls"
+    }
+]

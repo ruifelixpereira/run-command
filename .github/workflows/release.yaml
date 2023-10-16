@@ -1,0 +1,49 @@
+name: release
+
+# create a release when a tag is pushed
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  build_release:
+    name: build_release
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      - name: Install dependencies
+        run: npm ci
+      - name: Build
+        run: npm run prestart
+      - name: Get version
+        run: echo "::set-output name=version::$(jq -r .version package.json)"
+        id: version
+      - name: Build artifacts
+        run: cd scripts && ./prepare-package.sh
+      - name: Create Release
+        uses: actions/create-release@v1
+        id: create_release
+        with:
+          draft: false
+          prerelease: false
+          release_name: ${{ steps.version.outputs.version }}
+          tag_name: ${{ github.ref }}
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+      - name: Upload linux artifact
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./packages/runcmd-func-app-rev${{ steps.version.outputs.version }}.zip
+          asset_name: runcmd-func-app-rev${{ steps.version.outputs.version }}.zip
+          asset_content_type: application/zip

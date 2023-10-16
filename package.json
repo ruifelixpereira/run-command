@@ -1,0 +1,32 @@
+{
+  "name": "runcmd-funcapp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/src/functions/*.js",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "clean": "rimraf dist",
+    "prestart": "npm run clean && npm run build",
+    "start": "func start",
+    "test": "echo \"No tests yet...\"",
+    "version": "echo $npm_package_version",
+    "pack": "rm -rf packages && mkdir packages && zip -r ./packages/runcmd-func-app-rev${npm_package_version}.zip . -x ./docs/**\\* ./src/**\\* ./scripts/**\\* ./.git/**\\* ./.vscode/**\\* ./packages/**\\* MYLOG.md local.settings.json",
+    "deploy": "func azure functionapp publish xxxxx-func"
+  },
+  "dependencies": {
+    "@azure/arm-compute": "^21.2.0",
+    "@azure/arm-resourcegraph": "^4.2.1",
+    "@azure/functions": "^4.0.0-alpha.9",
+    "@azure/identity": "^3.3.1",
+    "@azure/monitor-ingestion": "^1.0.0",
+    "@azure/storage-blob": "^12.16.0",
+    "@azure/storage-queue": "^12.15.0"
+  },
+  "devDependencies": {
+    "@types/node": "18.x",
+    "azure-functions-core-tools": "^4.x",
+    "rimraf": "^5.0.0",
+    "typescript": "^4.0.0"
+  }
+}

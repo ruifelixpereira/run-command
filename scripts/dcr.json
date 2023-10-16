@@ -1,0 +1,143 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "dataCollectionRuleName": {
+            "type": "string",
+            "metadata": {
+                "description": "Specifies the name of the Data Collection Rule to create."
+            }
+        },
+        "location": {
+            "type": "string",
+            "metadata": {
+                "description": "Specifies the location in which to create the Data Collection Rule."
+            }
+        },
+        "workspaceResourceId": {
+            "type": "string",
+            "metadata": {
+                "description": "Specifies the Azure resource ID of the Log Analytics workspace to use."
+            }
+        },
+        "endpointResourceId": {
+            "type": "string",
+            "metadata": {
+                "description": "Specifies the Azure resource ID of the Data Collection Endpoint to use."
+            }
+        },
+        "workspaceTableName": {
+            "type": "string",
+            "metadata": {
+                "description": "Specifies the table name in the Log Analytics workspace."
+            }
+        }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Insights/dataCollectionRules",
+            "name": "[parameters('dataCollectionRuleName')]",
+            "location": "[parameters('location')]",
+            "apiVersion": "2021-09-01-preview",
+            "properties": {
+                "dataCollectionEndpointId": "[parameters('endpointResourceId')]",
+                "streamDeclarations": {
+                    "Custom-RunCmdTableRawData": {
+                        "columns": [
+                            {
+                                "name": "Time",
+                                "type": "datetime"
+                            },
+                            {
+                                "name": "commandId",
+                                "type": "string"
+                            },
+                            {
+                                "name": "commandName",
+                                "type": "string"
+                            },
+                            {
+                                "name": "location",
+                                "type": "string"
+                            },
+                            {
+                                "name": "vmName",
+                                "type": "string"
+                            },
+                            {
+                                "name": "resourceGroup",
+                                "type": "string"
+                            },
+                            {
+                                "name": "subscriptionId",
+                                "type": "string"
+                            },
+                            {
+                                "name": "source",
+                                "type": "string"
+                            },
+                            {
+                                "name": "InstanceView",
+                                "type": "string"
+                            },
+                            {
+                                "name": "executionState",
+                                "type": "string"
+                            },
+                            {
+                                "name": "executionMessage",
+                                "type": "string"
+                            },
+                            {
+                                "name": "exitCode",
+                                "type": "string"
+                            },
+                            {
+                                "name": "stdOutput",
+                                "type": "string"
+                            },
+                            {
+                                "name": "stdError",
+                                "type": "string"
+                            },
+                            {
+                                "name": "startTime",
+                                "type": "datetime"
+                            },
+                            {
+                                "name": "endTime",
+                                "type": "datetime"
+                            }
+                        ]
+                    }
+                },
+                "destinations": {
+                    "logAnalytics": [
+                        {
+                            "workspaceResourceId": "[parameters('workspaceResourceId')]",
+                            "name": "myworkspace"
+                        }
+                    ]
+                },
+                "dataFlows": [
+                    {
+                        "streams": [
+                            "Custom-RunCmdTableRawData"
+                        ],
+                        "destinations": [
+                            "myworkspace"
+                        ],
+                        "transformKql": "source | extend jsonContext = parse_json(InstanceView) | project TimeGenerated = Time, commandId, commandName, vmName, resourceGroup, subscriptionId, source, executionState=tostring(jsonContext.executionState), executionMessage=tostring(jsonContext.executionMessage), exitCode=tostring(jsonContext.exitCode), stdOutput=tostring(jsonContext.stdOutput), stdError=tostring(jsonContext.stdError), startTime=todatetime(jsonContext.startTime), endTime=todatetime(jsonContext.endTime)",
+                        "outputStream": "[concat('Custom-', parameters('workspaceTableName'), '_CL')]"
+                    }
+                ]
+            }
+        }
+    ],
+    "outputs": {
+        "dataCollectionRuleId": {
+            "type": "string",
+            "value": "[resourceId('Microsoft.Insights/dataCollectionRules', parameters('dataCollectionRuleName'))]"
+        }
+    }
+}
