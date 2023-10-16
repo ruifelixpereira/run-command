@@ -11,7 +11,7 @@
     "start": "func start",
     "test": "echo \"No tests yet...\"",
     "version": "echo $npm_package_version",
-    "pack": "rm -rf packages && mkdir packages && zip -r ./packages/runcmd-func-app-rev${npm_package_version}.zip . -x ./docs/**\\* ./src/**\\* ./scripts/**\\* ./.git/**\\* ./.vscode/**\\* ./packages/**\\* MYLOG.md local.settings.json",
+    "pack": "rm -rf packages && mkdir packages && zip -r ./packages/runcmd-func-app-rev${npm_package_version}.zip . -x ./docs/**\\* ./src/**\\* ./scripts/**\\* ./.git/**\\* ./.vscode/**\\* ./.github/**\\* ./packages/**\\* MYLOG.md local.settings.json",
     "deploy": "func azure functionapp publish xxxxx-func"
   },
   "dependencies": {

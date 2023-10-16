@@ -1,6 +1,7 @@
 #!/bin/bash
 
 currentDir=$(pwd)
+
 cd ..
 REVISION=$(jq -r .version package.json)
 
